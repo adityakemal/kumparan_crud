@@ -1,0 +1,66 @@
+.post{
+    .post-detail-text{
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+        background-color: whitesmoke;
+    }
+    .box-comment{
+        padding: 0px 15px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        .head-comments{
+            display: flex;
+            justify-content: space-between;
+            h4{
+                color: $primary;
+                margin: 0;
+                i{
+                    color: $warning;
+                    margin-left: 10px;
+                }
+            }
+            .box_action{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg{
+                    width: 21px;
+                    height: 21px;
+                    margin: 0 6px;
+                    color: $primary;
+                    cursor: pointer;
+                    &:last-of-type{
+                        color: $danger;
+                    }
+                    &:first-of-type{
+                        color: $primary;;
+                    }
+                }
+            }
+        }
+        p{
+            font-size: 12px;
+        }
+    }
+    form{
+        width: 100%;
+        margin-bottom: 20px;
+        .MuiFormControl-root{
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+    }
+}
+.modalformwrap{
+    background-color: whitesmoke !important;
+    padding: 5px 20px 20px;
+    form{
+        display: flex;
+        flex-direction: column;
+        .MuiFormControl-root{
+            margin-bottom: 10px;
+            width: 80vw !important;
+        }
+    }
+}

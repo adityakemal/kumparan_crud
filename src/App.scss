@@ -6,8 +6,41 @@ $warning : #FFC105;
 $success : #28a745;
 
 
+// global styles 
+.modal_remove_outline{
+  outline: none !important;
+}
+
+.fof{ //404 PAGES
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  h2{
+    margin: 0;
+    font-weight: 300;
+  }
+}
+
+a{
+  text-decoration: none;
+}
+
+.loading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 3;
+}
 
 
 @import './styles/home.scss';
-@import './styles/detailpost.scss';
+@import './styles/post.scss';
 @import './styles/photos.scss';
