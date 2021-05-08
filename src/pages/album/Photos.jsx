@@ -1,32 +1,35 @@
 import { Container, Grid } from '@material-ui/core';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Edit, Info, Trash2 } from 'react-feather';
+import { ArrowLeft} from 'react-feather';
+import { useHistory } from 'react-router';
+import API from '../../api';
 import ModalTemplate from '../../shared/ModalTemplate';
-// import { useHistory } from "react-router-dom";
 
 function Photos(props) {
+    const history = useHistory()
+
+    var albumId = props.match.params.albumId
+    
     const [data, setData] = useState([])
     const [modal, setModal] = useState(false)
     const [detailPhoto, setDetailPhoto] = useState({})
+    
     useEffect(()=>{
-        getData()
-    },[])
-    const getData = ()=>{
-        axios.get(`https://jsonplaceholder.typicode.com/photos/`).then(res=>{
+        API.getPhotos(albumId).then(res=>{
             console.log(res)
-            setData(res.data.filter(res=> res.albumId === parseInt(props.match.params.albumId)))
+            setData(res.data)
         }).catch(err=>{
             console.log(err.response)
         })
-    }
+    },[albumId])
+
 
     const compDetailPhoto = ()=>{
         const {url, title} = detailPhoto
         return(
-            <div className='detail-photo' style={{background : 'white', padding: 20}}>
+            <div className='detail-photo' >
                 <img src={ url } alt='detail-photos'/>
-                <h2 style={{width : 600}}>{title}</h2>
+                <p>{title}</p>
             </div>
         )
     }
@@ -37,17 +40,19 @@ function Photos(props) {
     }
 
     return (
-        <>
+        <Container maxWidth={"lg"} className="home photos">
         <ModalTemplate onOpen={modal} onClose={()=> setModal(false)} component={compDetailPhoto} />
-        <Container maxWidth={"lg"} className="photos">
-            <h1><ArrowLeft/> PHOTOS </h1>
+            <h1><ArrowLeft onClick={()=> history.goBack()}/> PHOTOS </h1>
            <Grid
             container
             spacing={2}
+            direction="row"
+            justify="space-evenly"
+            alignItems="baseline"
             >
                 {
                     data.map((res,i)=>(
-                        <Grid item  key={i}>
+                        <Grid item className='figure' key={i}>
                             <img src={res.thumbnailUrl} alt={res.title} onClick={()=>handleDetail(res)}/>
                         </Grid>
                     ))
@@ -55,7 +60,6 @@ function Photos(props) {
 
             </Grid>
         </Container>
-        </>
     );
 }
 

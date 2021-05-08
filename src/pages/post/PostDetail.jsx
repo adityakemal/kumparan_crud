@@ -1,42 +1,39 @@
 import { Button, Container, TextField } from '@material-ui/core';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Edit, Info, Trash2 } from 'react-feather';
+import { ArrowLeft, Edit, Trash2 } from 'react-feather';
 import API from '../../api';
 import Loading from '../../shared/Loading';
 import ModalTemplate from '../../shared/ModalTemplate';
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import Swal from 'sweetalert2';
 
 
 function PostDetail(props) {
-    console.log(props)
+
+    const history = useHistory()
+    const postId = props.match.params.postId
+    
     const [comments, setComments] = useState([])
-
-    const [postId, setPostId] = useState(props.match.params.postId)
-
     const [id, setId] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [body, setBody] = useState('')
-
+    
     const [loading, setLoading] = useState(false)
     const [modal, setModal] = useState(false)
     const [isEdit, setEdit] = useState(false)
-
-
+    
+    const [callApi, setCallApi] = useState(false)
+    
     useEffect(()=>{
-        getData()
-    },[])
-    const getData = ()=>{
         API.getPostsComment(postId).then(res=>{
-            console.log(res)
             setComments(res.data)
         }).catch(err=>{
             console.log(err.response)
         })
-    }
+    },[callApi, postId])
+   
 
     const handleSubmit = (e)=>{
         setLoading(true)
@@ -55,9 +52,9 @@ function PostDetail(props) {
             setName('')
             setEmail('')
             setBody('')
-
             setEdit(false)
-            getData()
+            setCallApi(!callApi)
+            // getData()
             setLoading(false)
         }).catch(err=>{
             setEdit(false)
@@ -74,6 +71,15 @@ function PostDetail(props) {
         setBody(res.body)
         setEdit(true)
         setModal(true)
+    }
+
+    const handleCloseModal =()=>{
+        setId("")
+        setName("")
+        setEmail("")
+        setBody("")
+        setEdit(false)
+        setModal(false)
     }
 
     const handleDelete = (id)=>{
@@ -96,7 +102,8 @@ function PostDetail(props) {
                         timer: 1500
                     })
                     setLoading(false)
-                    getData()
+                    setCallApi(!callApi)
+                    // getData()
                 }).catch(err=>{
                     Swal.fire({
                         icon: 'error',
@@ -145,10 +152,10 @@ function PostDetail(props) {
     )
 
     return (
-        <Container maxWidth={"lg"} className="post">
+        <Container maxWidth={"lg"} className="home post">
              { loading ?<Loading /> : null}
-            <ModalTemplate onOpen={modal} onClose={()=>setModal(false)} component={modalForm}/>
-            <h1><ArrowLeft/> POST DETAIL</h1>
+            <ModalTemplate onOpen={modal} onClose={handleCloseModal} component={modalForm}/>
+            <h1><ArrowLeft onClick={()=> history.goBack()}/> POST DETAIL</h1>
             <div className="post-detail-text">
                 <h2>{props.match.params.title}</h2>
                 <p>{props.match.params.body}</p>

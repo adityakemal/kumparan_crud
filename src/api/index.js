@@ -1,5 +1,6 @@
 
 import * as Axios from "axios";
+import API_ALBUM from "./apiAlbum";
 // import Swal from "sweetalert2";
 import API_COMMENT from "./apiComment";
 import API_POST from "./apiPost";
@@ -26,7 +27,8 @@ Axios.defaults.baseURL = `http://${process.env.REACT_APP_BASE_URL}:${process.env
 const API = {
     ...API_USER,
     ...API_POST,
-    ...API_COMMENT
+    ...API_COMMENT,
+    ...API_ALBUM
 };
 
 export default API;

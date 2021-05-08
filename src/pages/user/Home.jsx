@@ -41,7 +41,7 @@ function Home() {
                                     <Td>{i+1} </Td>
                                     <Td>{res.name} </Td>
                                     <Td>{res.phone}</Td>
-                                    <Td> <a href={`https://${res.website}`} target='_blank'>{res.website}</a> </Td>
+                                    <Td> <a href={`https://${res.website}`} target='_blank' rel="noreferrer">{res.website}</a> </Td>
                                     <Td>
                                         <div className="box_action">
                                             <Link to={`/posts/${res.id}`}>

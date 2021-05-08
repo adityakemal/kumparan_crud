@@ -2,7 +2,7 @@ import { Button, Container, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Edit, Info, Trash2 } from 'react-feather';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import API from '../../api';
 import Loading from '../../shared/Loading';
 import Swal from 'sweetalert2';
@@ -12,29 +12,28 @@ import { v4 as uuidv4 } from 'uuid';
 
 function Posts(props) {
     const history = useHistory()
-    console.log(props)
+    const userId = props.match.params.userId
     const [data, setData] = useState([])
-
-    const [userId, setUserId] = useState(parseInt(props.match.params.userId))
+    
     const [id, setId] = useState('')
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
-
+    
     const [loading, setLoading] = useState(false)
     const [modal, setModal] = useState(false)
     const [isEdit, setEdit] = useState(false)
-
+    
+    const [callApi, setCallApi] = useState(false)
+    
+    
     useEffect(()=>{
-        getData()
-    },[])
-
-    const getData = ()=>{
-        API.getPosts().then(res=>{
-            setData(res.data.filter(val=> val.userId === parseInt(props.match.params.userId)))
+        API.getPosts(userId).then(res=>{
+            setData(res.data)
         }).catch(err=>{
             console.log(err.response)
         })
-    }
+    },[userId, callApi])
+
 
     const handleSubmit = (e)=>{
         setLoading(true)
@@ -52,7 +51,8 @@ function Posts(props) {
             setTitle('')
             setBody('')
             setEdit(false)
-            getData()
+            // getData()
+            setCallApi(!callApi)
             setLoading(false)
         }).catch(err=>{
             setEdit(false)
@@ -82,7 +82,8 @@ function Posts(props) {
                         timer: 1500
                     })
                     setLoading(false)
-                    getData()
+                    // getData()
+                    setCallApi(!callApi)
                 }).catch(err=>{
                     Swal.fire({
                         icon: 'error',
@@ -100,6 +101,14 @@ function Posts(props) {
         setBody(res.body)
         setEdit(true)
         setModal(true)
+    }
+
+    const handleCloseModal =()=>{
+        setId("")
+        setTitle("")
+        setBody("")
+        setEdit(false)
+        setModal(false)
     }
 
     const modalForm = () =>(
@@ -133,8 +142,8 @@ function Posts(props) {
     return (
         <Container maxWidth={"lg"} className="home post">
             { loading ?<Loading /> : null}
-            <ModalTemplate onOpen={modal} onClose={()=>setModal(false)} component={modalForm}/>
-            <h1><ArrowLeft/> POSTS</h1>
+            <ModalTemplate onOpen={modal} onClose={handleCloseModal} component={modalForm}/>
+            <h1><ArrowLeft onClick={()=> history.goBack()}/> POSTS</h1>
 
             <Button variant='contained' color='primary' onClick={()=>setModal(true)}>add post</Button>
             <br/>

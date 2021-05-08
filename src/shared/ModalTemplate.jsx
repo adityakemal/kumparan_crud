@@ -8,7 +8,6 @@ class ModalTemplate extends Component {
         return (
             <div>
                 <Modal
-                    className={middle}
                     style={middle}
                     open={this.props.onOpen}
                     onClose={this.props.onClose}

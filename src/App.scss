@@ -11,6 +11,24 @@ $success : #28a745;
   outline: none !important;
 }
 
+h1{
+  display: flex;
+  align-items: center;
+  svg{
+    margin-right: 20px;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.modal_remove_outline{
+  outline: none !important;
+  display: flex;
+  justify-content: center;
+}
+
+
 .fof{ //404 PAGES
   display: flex;
   justify-content: center;

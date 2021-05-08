@@ -2,8 +2,8 @@
 import * as Axios from "axios";
 
 const API_POST = {
-    getPosts: ()=>{
-        return Axios.get(`/posts`);
+    getPosts: (userId)=>{
+        return Axios.get(`/users/${userId}/posts`);
     },
     postPost: (props)=>{
         return Axios.post(`/posts`, props);
